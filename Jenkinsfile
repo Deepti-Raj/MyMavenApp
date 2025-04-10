@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'master', url: 'https://github.com/Deepti-Raj/MyMavenApp.git'
+                git branch: 'master', url: 'https://github.com/Hemavathipcse/MyMavenJenkinsPipeline.git'
             }
         }
 
@@ -29,13 +29,22 @@ pipeline {
         stage('Run Application') {
             steps {
                 // Start the JAR application
-                sh 'java -jar target/MyMavenApp-1.0-SNAPSHOT.jar'
+                sh 'java -jar target/MyMavenJenkinsPipeline-1.0-SNAPSHOT.jar'
             }
         }
+        stage('Archive') {
+  steps {
+            archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+        }
+   }
+   stage('Deploy') {
+   steps {
+     sh 'mvn clean package'
+   }
 
         
-    }
-
+     }
+}
     post {
         success {
             echo 'Build and deployment successful!'
